@@ -11,7 +11,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "zenroom": "^5.9.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.4",

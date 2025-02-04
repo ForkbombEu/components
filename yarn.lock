@@ -1437,3 +1437,8 @@ ws@^8.2.3:
   version "8.18.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
+
+zenroom@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/zenroom/-/zenroom-5.9.0.tgz#421bd0c921fbab7a034bcca746df542d9886a36b"
+  integrity sha512-kCqFSXrnWV4rIeIY+4QjgZ1gyKWet0OCWkw6KtNEioqe+hjTxlLNXNwttmkxSrkplei0CNzF1HJR9MpOoE5CfA==

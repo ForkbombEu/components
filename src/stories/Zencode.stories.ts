@@ -1,23 +1,23 @@
-import { fn } from "@storybook/test";
-
 import type { Meta, StoryObj } from "@storybook/web-components";
+import { html } from "lit";
 
 import type { ZencodeProps } from "./Zencode";
-import { Zencode } from "./Zencode";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {
   title: "Example/Zencode",
   tags: ["autodocs"],
-  render: (args) => Zencode(args),
+  render: (args) => html`
+    <zencode-element .data=${args.data} .keys=${args.keys}>
+      ${args.children}
+    </zencode-element>
+  `,
   argTypes: {
-    backgroundColor: { control: "color" },
-    size: {
-      control: { type: "select" },
-      options: ["small", "medium", "large"],
+    data: { control: "text" },
+    keys: {
+      control: { type: "text" },
     },
   },
-  args: { onClick: fn() },
 } satisfies Meta<ZencodeProps>;
 
 export default meta;
@@ -26,8 +26,13 @@ type Story = StoryObj<ZencodeProps>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    primary: true,
-    label: "Button",
+    data: "ciao",
+    keys: "ciao",
+    children: html`
+      <div slot="header">Header Content</div>
+      <div>Default Slot Content</div>
+      <div slot="footer">Footer Content</div>
+    `,
   },
 };
 
