@@ -1,9 +1,9 @@
 import { html } from "lit";
 import { styleMap } from "lit/directives/style-map.js";
 
-import "./button.css";
+import "./zencode.css";
 
-export interface ButtonProps {
+export interface ZencodeProps {
   /** Is this the principal call to action on the page? */
   primary?: boolean;
   /** What background color to use */
@@ -16,13 +16,13 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 /** Primary UI component for user interaction */
-export const Button = ({
+export const Zencode = ({
   primary,
   backgroundColor,
   size,
   label,
   onClick,
-}: ButtonProps) => {
+}: ZencodeProps) => {
   const mode = primary
     ? "storybook-button--primary"
     : "storybook-button--secondary";
