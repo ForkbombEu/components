@@ -32,7 +32,13 @@ export class Zencode extends LitElement implements ZencodeProps {
 
   //
 
-  runContract() {
+  runContract(
+    onError?: (detail: {
+      id: string;
+      contract: string;
+      result: ZenroomResult;
+    }) => void
+  ) {
     if (!this.contract) return;
 
     const params: { data?: string; keys?: string } = {};
@@ -48,7 +54,8 @@ export class Zencode extends LitElement implements ZencodeProps {
         }
       })
       .catch((e) => {
-        console.error("Error of " + this.id, e.logs);
+        if (onError) onError(e);
+        else console.error("Error of " + this.id, e.logs);
       });
   }
 
@@ -104,24 +111,16 @@ export class Zencode extends LitElement implements ZencodeProps {
   private resultTemplate() {
     if (!this.result) return;
 
-    const { logs, result } = this.result;
+    const { result } = this.result;
     const parsedResult = JSON.parse(result);
 
     const resultId = this.id + "-result";
-    const logsId = this.id + "-logs";
 
     return html`
       <div id="${resultId}" class="container z-result">
         <p class="container-name">Result</p>
         <div class="container-content">
           <pre>${JSON.stringify(parsedResult, null, 2)}</pre>
-        </div>
-      </div>
-
-      <div id="${logsId}" class="container z-logs">
-        <p class="container-name">Logs</p>
-        <div class="container-content">
-          <pre>${logs}</pre>
         </div>
       </div>
     `;
