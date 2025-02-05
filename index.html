@@ -25,9 +25,10 @@
       </pre>
     </zencode-element>
     <script>
-      const zencode = document.getElementById("ciao");
-      console.log(zencode);
-      zencode.customX();
+      window.addEventListener("DOMContentLoaded", () => {
+        const zencode = document.getElementById("ciao");
+        zencode.runContract();
+      });
     </script>
   </body>
 </html>

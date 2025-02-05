@@ -67,10 +67,8 @@ export class Zencode extends LitElement implements ZencodeProps {
 
   private handleSlotchange(e: Event) {
     if (!e.target) return;
-
     const slot = e.target as HTMLSlotElement;
     this.getContract(slot);
-    this.runContract();
   }
 
   private inputTemplate() {
