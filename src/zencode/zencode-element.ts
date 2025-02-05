@@ -89,9 +89,10 @@ export class Zencode extends LitElement implements ZencodeProps {
   }
 
   private contractTemplate() {
+    const id = this.id + "-contract";
     if (this.contract)
       return html`
-        <div class="container">
+        <div id="${id}" class="container z-contract">
           <p class="container-name">Contract</p>
           <div class="container-content">
             <pre>${this.contract}</pre>
@@ -106,15 +107,18 @@ export class Zencode extends LitElement implements ZencodeProps {
     const { logs, result } = this.result;
     const parsedResult = JSON.parse(result);
 
+    const resultId = this.id + "-result";
+    const logsId = this.id + "-logs";
+
     return html`
-      <div class="container">
+      <div id="${resultId}" class="container z-result">
         <p class="container-name">Result</p>
         <div class="container-content">
           <pre>${JSON.stringify(parsedResult, null, 2)}</pre>
         </div>
       </div>
 
-      <div class="container">
+      <div id="${logsId}" class="container z-logs">
         <p class="container-name">Logs</p>
         <div class="container-content">
           <pre>${logs}</pre>
