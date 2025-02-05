@@ -28,7 +28,7 @@ export class Zencode extends LitElement implements ZencodeProps {
   private contract: string | undefined;
 
   @state()
-  private result: ZenroomResult | undefined;
+  private result: string | undefined;
 
   //
 
@@ -46,11 +46,11 @@ export class Zencode extends LitElement implements ZencodeProps {
     if (this.keys) params.keys = this.keys;
 
     zencode_exec(this.contract, params)
-      .then((r) => {
-        this.result = r;
+      .then(({ result }) => {
+        this.result = result;
         if (this.storage) {
-          if (this.storage === "local") LS(this.id, r.result);
-          if (this.storage === "session") SS(this.id, r.result);
+          if (this.storage === "local") LS(this.id, result);
+          if (this.storage === "session") SS(this.id, result);
         }
       })
       .catch((e) => {
@@ -111,13 +111,11 @@ export class Zencode extends LitElement implements ZencodeProps {
   private resultTemplate() {
     if (!this.result) return;
 
-    const { result } = this.result;
-    const parsedResult = JSON.parse(result);
-
-    const resultId = this.id + "-result";
+    const parsedResult = JSON.parse(this.result);
+    const id = this.id + "-result";
 
     return html`
-      <div id="${resultId}" class="container z-result">
+      <div id="${id}" class="container z-result">
         <p class="container-name">Result</p>
         <div class="container-content">
           <pre>${JSON.stringify(parsedResult, null, 2)}</pre>
