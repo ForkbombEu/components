@@ -1,6 +1,5 @@
 import { html, css, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { styleMap } from "lit/directives/style-map.js";
 import { zencode_exec } from "zenroom";
 
 export interface ZencodeProps {
@@ -24,7 +23,13 @@ export class Zencode extends LitElement implements ZencodeProps {
 
   //
 
-  getContract(slot: HTMLSlotElement) {
+  customX() {
+    console.log("ciao");
+  }
+
+  //
+
+  private getContract(slot: HTMLSlotElement) {
     const childNodes = slot.assignedNodes({ flatten: true });
 
     const allText = childNodes
@@ -60,7 +65,7 @@ export class Zencode extends LitElement implements ZencodeProps {
     // });
   }
 
-  handleSlotchange(e: Event) {
+  private handleSlotchange(e: Event) {
     if (!e.target) return;
 
     const slot = e.target as HTMLSlotElement;
@@ -68,7 +73,7 @@ export class Zencode extends LitElement implements ZencodeProps {
     this.runContract();
   }
 
-  inputTemplate() {
+  private inputTemplate() {
     return html`
       <div style="display:none">
         <slot @slotchange=${this.handleSlotchange}>
@@ -78,22 +83,29 @@ export class Zencode extends LitElement implements ZencodeProps {
     `;
   }
 
-  contractTemplate() {
+  private contractTemplate() {
     if (this.contract)
       return html`
         <div class="container" style="border: 2px solid blue;">
-          <div class="content">${this.contract}</div>
+          <pre class="content">${this.contract}</pre>
         </div>
       `;
   }
 
-  resultTemplate() {
-    if (this.result)
-      return html`
-        <div class="container" style="border: 2px solid blue;">
-          <div class="content">${JSON.stringify(this.result)}</div>
-        </div>
-      `;
+  private resultTemplate() {
+    if (!this.result) return;
+
+    const { logs, result } = this.result;
+    const parsedResult = JSON.parse(result);
+
+    return html`
+      <div class="container" style="border: 2px solid blue;">
+        <p>Result</p>
+        <pre class="content">${JSON.stringify(parsedResult, null, 2)}</pre>
+        <p>Logs</p>
+        <pre class="content">${logs}</pre>
+      </div>
+    `;
   }
 
   render() {

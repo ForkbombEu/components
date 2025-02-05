@@ -11,7 +11,7 @@
   </head>
   <body>
     <h1>zencode-element</h1>
-    <zencode-element>
+    <zencode-element id="ciao" style="width: 400px">
       <pre>
         Rule check version 2.0.0
         Scenario simple: Generate a random object
@@ -24,5 +24,10 @@
         Then print the 'my128BitsRandom'
       </pre>
     </zencode-element>
+    <script>
+      const zencode = document.getElementById("ciao");
+      console.log(zencode);
+      zencode.customX();
+    </script>
   </body>
 </html>
