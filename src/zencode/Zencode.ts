@@ -1,4 +1,4 @@
-import { html, css, LitElement } from "lit";
+import { css, html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { zencode_exec } from "zenroom";
 import { LS, SS, StorageType } from "./utils";
@@ -22,6 +22,8 @@ export class Zencode extends LitElement implements ZencodeProps {
   @property({ type: String })
   storage?: StorageType;
 
+  //
+
   @state()
   private contract: string | undefined;
 
@@ -29,29 +31,6 @@ export class Zencode extends LitElement implements ZencodeProps {
   private result: ZenroomResult | undefined;
 
   //
-
-  customX() {
-    console.log("ciao");
-  }
-
-  //
-
-  private getContract(slot: HTMLSlotElement) {
-    const childNodes = slot.assignedNodes({ flatten: true });
-
-    const allText = childNodes
-      .map((node) => {
-        return node.textContent ? node.textContent : "";
-      })
-      .join("");
-
-    const contract = allText
-      .split("\n")
-      .map((s) => s.trim())
-      .join("\n");
-
-    this.contract = contract;
-  }
 
   runContract() {
     if (!this.contract) return;
@@ -73,6 +52,26 @@ export class Zencode extends LitElement implements ZencodeProps {
       });
   }
 
+  //
+
+  private getContract(slot: HTMLSlotElement) {
+    const childNodes = slot.assignedNodes({ flatten: true });
+
+    const allText = childNodes
+      .map((node) => {
+        return node.textContent ? node.textContent : "";
+      })
+      .join("");
+
+    const contract = allText
+      .split("\n")
+      .map((s) => s.trim())
+      .join("\n")
+      .trim();
+
+    this.contract = contract;
+  }
+
   private handleSlotchange(e: Event) {
     if (!e.target) return;
     const slot = e.target as HTMLSlotElement;
@@ -92,8 +91,11 @@ export class Zencode extends LitElement implements ZencodeProps {
   private contractTemplate() {
     if (this.contract)
       return html`
-        <div class="container" style="border: 2px solid blue;">
-          <pre class="content">${this.contract}</pre>
+        <div class="container">
+          <p class="container-name">Contract</p>
+          <div class="container-content">
+            <pre>${this.contract}</pre>
+          </div>
         </div>
       `;
   }
@@ -105,18 +107,25 @@ export class Zencode extends LitElement implements ZencodeProps {
     const parsedResult = JSON.parse(result);
 
     return html`
-      <div class="container" style="border: 2px solid blue;">
-        <p>Result</p>
-        <pre class="content">${JSON.stringify(parsedResult, null, 2)}</pre>
-        <p>Logs</p>
-        <pre class="content">${logs}</pre>
+      <div class="container">
+        <p class="container-name">Result</p>
+        <div class="container-content">
+          <pre>${JSON.stringify(parsedResult, null, 2)}</pre>
+        </div>
+      </div>
+
+      <div class="container">
+        <p class="container-name">Logs</p>
+        <div class="container-content">
+          <pre>${logs}</pre>
+        </div>
       </div>
     `;
   }
 
   render() {
     return html`
-      <div class="container">
+      <div class="main">
         ${this.inputTemplate()} ${this.contractTemplate()}
         ${this.resultTemplate()}
       </div>
@@ -124,31 +133,36 @@ export class Zencode extends LitElement implements ZencodeProps {
   }
 
   static styles = css`
-    :host {
-      display: block;
+    p,
+    pre {
+      margin: 0;
+    }
+
+    pre {
+      padding: var(--px);
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      --px: 0.5rem;
     }
 
     .container {
-      display: block;
-      min-width: 200px;
-      min-height: 50px;
-      background-color: green !important;
-      padding: 1rem;
-      box-sizing: border-box;
+      border: 2px solid blue;
     }
 
-    .content {
-      color: white !important;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    ::slotted(*) {
-      color: white !important;
+    .container-name {
+      background-color: blue;
+      color: white;
+      font-family: monospace;
       margin: 0;
+      padding: 0 var(--px);
+    }
+
+    .container-content {
+      overflow-x: auto;
     }
   `;
 }
