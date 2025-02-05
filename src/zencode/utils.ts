@@ -2,10 +2,15 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Define type for storage to match Web Storage API
-type Storage =
-  | WindowLocalStorage["localStorage"]
-  | WindowSessionStorage["sessionStorage"];
+type StorageSystems = {
+  local: WindowLocalStorage["localStorage"];
+  session: WindowSessionStorage["sessionStorage"];
+};
+
+type Storage = StorageSystems[keyof StorageSystems];
+export type StorageType = keyof StorageSystems;
+
+//
 
 export const S = (storage: Storage, key: string, value: unknown): void =>
   storage.setItem(key, JSON.stringify(value));

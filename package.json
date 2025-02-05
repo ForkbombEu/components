@@ -11,6 +11,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@types/node": "^22.13.1",
     "lit": "^3.2.1",
     "zenroom": "^5.9.0"
   },

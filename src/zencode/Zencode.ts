@@ -1,10 +1,14 @@
 import { html, css, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { zencode_exec } from "zenroom";
+import { LS, SS, StorageType } from "./utils";
+
+//
 
 export interface ZencodeProps {
   data?: string;
   keys?: string;
+  storage?: StorageType;
 }
 
 @customElement("zencode-element")
@@ -14,6 +18,9 @@ export class Zencode extends LitElement implements ZencodeProps {
 
   @property({ type: String })
   keys?: string;
+
+  @property({ type: String })
+  storage?: StorageType;
 
   @state()
   private contract: string | undefined;
@@ -53,16 +60,17 @@ export class Zencode extends LitElement implements ZencodeProps {
     if (this.data) params.data = this.data;
     if (this.keys) params.keys = this.keys;
 
-    zencode_exec(this.contract, params).then((r) => {
-      this.result = r;
-    });
-    // .then((r) => {
-    //   if (storage === "local") LS(id, r.result);
-    //   if (storage === "session") SS(id, r.result);
-    // })
-    // .catch((e) => {
-    //   console.error("Error of " + id, e.logs);
-    // });
+    zencode_exec(this.contract, params)
+      .then((r) => {
+        this.result = r;
+        if (this.storage) {
+          if (this.storage === "local") LS(this.id, r.result);
+          if (this.storage === "session") SS(this.id, r.result);
+        }
+      })
+      .catch((e) => {
+        console.error("Error of " + this.id, e.logs);
+      });
   }
 
   private handleSlotchange(e: Event) {
